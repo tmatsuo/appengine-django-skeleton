@@ -89,6 +89,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+# CloudSQL config variables
+PROJECT_ID = "your-project-id"
+CLOUD_SQL_INSTANCE = "your-cloud-sql-instance"
+DATABASE_NAME = 'your-databse-name'
+DATABASE_USER = 'your-database-user'
+DATABASE_PASSWORD = 'your-database-password'
+DATABASE_HOST = 'your-database-host'
+
 # [START db_setup]
 import os
 if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
@@ -96,8 +104,8 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/<your-project-id>:<your-cloud-sql-instance>',
-            'NAME': '<your-database-name>',
+            'HOST': '/cloudsql/{}:{}'.format(PROJECT_ID, CLOUD_SQL_INSTANCE),
+            'NAME': DATABASE_NAME,
             'USER': 'root',
         }
     }
@@ -105,10 +113,10 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': '<your-database-name>',
-            'USER': '<your-database-user>',
-            'PASSWORD': '<your-database-password>',
-            'HOST': '<your-database-host>',
+            'NAME': DATABASE_NAME,
+            'USER': DATABASE_USER,
+            'PASSWORD': DATABASE_PASSWORD,
+            'HOST': DATABASE_HOST,
             'PORT': '3306',
         }
     }
